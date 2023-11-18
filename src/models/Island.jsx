@@ -6,7 +6,7 @@ import { a } from "@react-spring/three";
 
 import IslandScene from "../assets/3d/island.glb";
 
-const Island = ({ isRotating, setIsRotating, ...props }) => {
+const Island = ({ isRotating, setIsRotating, setCurrentStage, ...props }) => {
   const islandRef = useRef();
 
   const { gl, viewport } = useThree();
