@@ -2,7 +2,8 @@ import { Suspense, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { Canvas } from "@react-three/fiber";
 import { Fox } from "../models";
-import { Loader } from "../components";
+import { Alert, Loader } from "../components";
+import { useAlert } from "../hooks";
 
 const Contact = () => {
   const formRef = useRef(null);
@@ -14,6 +15,8 @@ const Contact = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [currentAnimation, setCurrentAnimation] = useState("idle");
+
+  const { alert, showAlert, hideAlert } = useAlert();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -39,20 +42,26 @@ const Contact = () => {
       )
       .then(() => {
         setIsLoading(false);
-        // TODO: show success message
-        // TODO: Hide an alert
+        showAlert({
+          show: true,
+          type: "success",
+          text: "Your message has been sent successfully!",
+        });
 
         setTimeout(() => {
+          hideAlert();
           setCurrentAnimation("idle");
           setForm({ name: "", email: "", message: "", status: "success" });
         }, [3000]);
       })
       .catch((error) => {
         setIsLoading(false);
-        setForm({ name: "", email: "", message: "", status: "failure" });
         setCurrentAnimation("idle");
-        console.log(error);
-        // TODO: show error message
+        showAlert({
+          show: true,
+          type: "danger",
+          text: "Your message has *NOT* been sent...",
+        });
       });
   };
 
@@ -65,6 +74,7 @@ const Contact = () => {
 
   return (
     <section className="relative flex lg:flex-row flex-col max-container">
+      {alert.show && <Alert {...alert} />}
       <div className="flex-1 min-w-[50%] flex flex-col">
         <h1 className="head-text">Get in touch</h1>
 
