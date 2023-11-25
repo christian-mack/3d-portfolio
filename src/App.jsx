@@ -4,7 +4,7 @@ import { About, Home, Projects, Contact } from "./pages";
 
 export default function App() {
   return (
-    <main className="bg-slate-300/20 h-[100vh]">
+    <main className="bg-slate-300/20 h-full">
       <Router>
         <Navbar />
         <Routes>
